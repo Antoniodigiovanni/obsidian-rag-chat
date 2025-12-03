@@ -1,8 +1,29 @@
 .env
 secrets.toml
 
-_*.py
 _*.ipynb
 _*.todo
 _old*
 TODO.md
+
+__pycache__/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.venv.bak/
+
+*.pyo
+*.pyd
+
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+*.egg
+
+.ipynb_checkpoints/
+.vscode/
