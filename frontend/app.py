@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import os
+import time
 
 # App Config
 st.set_page_config(page_title="ObsiChat", page_icon="🧠")
@@ -12,14 +13,25 @@ BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
 HEALTH_ENDPOINT = f"{BACKEND_URL}/"
 QUERY_ENDPOINT = f"{BACKEND_URL}/query"
 
-# API Health Check
-try:
-    response = requests.get(HEALTH_ENDPOINT)
-    if response.status_code != 200 or response.json().get("status") != "active":
-        st.error("Backend is not running or not healthy. Please start the FastAPI server.")
-        st.stop()
-except requests.exceptions.ConnectionError:
-    st.error(f"Could not connect to the backend at {BACKEND_URL}. Please ensure it's running.")
+# Health Check + Wake up the backend if it goes to sleep (free tier...)
+with st.spinner("Waking up backend server... this may take up to 2 minutes on Render ⏳"):
+    max_retries = 30   # retry for ~30–60 seconds depending on sleep interval
+    sleep_seconds = 2
+
+    backend_ready = False
+    for _ in range(max_retries):
+        try:
+            response = requests.get(HEALTH_ENDPOINT, timeout=5)
+            if response.status_code == 200 and response.json().get("status") == "active":
+                backend_ready = True
+                break
+        except requests.exceptions.ConnectionError:
+            pass  # backend is still asleep
+
+        time.sleep(sleep_seconds)
+
+if not backend_ready:
+    st.error(f"Backend at {BACKEND_URL} is not responding. It may still be waking up, try refreshing the page!")
     st.stop()
 
 # Chat
