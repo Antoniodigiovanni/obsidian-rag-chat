@@ -1,0 +1,8 @@
+.env
+secrets.toml
+
+_*.py
+_*.ipynb
+_*.todo
+_old*
+TODO.md
