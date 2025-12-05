@@ -1,11 +1,11 @@
 from langchain_mongodb import MongoDBAtlasVectorSearch
 from app.core.config import settings
-from app.db.mongodb import collection
+from app.db.mongodb import chunks_collection
 from app.ai.embeddings import embeddings
 
 try:
     vector_store = MongoDBAtlasVectorSearch(
-        collection=collection,
+        collection=chunks_collection,
         embedding=embeddings,
         index_name=settings.INDEX_NAME
     )

@@ -7,7 +7,8 @@ try:
     # Ping to verify connection
     client.admin.command('ping')
     db = client[settings.DB_NAME]
-    collection = db[settings.COLLECTION_NAME]
+    chunks_collection = db[settings.CHUNKS_COLLECTION_NAME]
+    documents_collection = db[settings.DOCUMENTS_COLLECTION_NAME]
     print("Successfully connected to MongoDB.")
 except Exception as e:
     print(f"Error connecting to MongoDB: {e}")
