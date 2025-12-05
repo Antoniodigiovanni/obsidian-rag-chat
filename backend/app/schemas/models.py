@@ -10,6 +10,7 @@ class QueryInput(BaseModel):
 
 class DocumentResponse(BaseModel):
     id: str
+    title: str = "Untitled"
     content: str
     metadata: dict
 
