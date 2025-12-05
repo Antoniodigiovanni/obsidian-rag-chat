@@ -4,7 +4,8 @@ from app.schemas.models import DocumentResponse
 def serialize_doc(doc):
     return DocumentResponse(
         id=str(doc["_id"]),
-        content=doc.get("text", "") or doc.get("page_content", ""),
+        title=doc.get("title", "Untitled"),
+        content=doc.get("full_content") or doc.get("text") or doc.get("page_content", ""),
         metadata=doc.get("metadata", {})
     )
 
